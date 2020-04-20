@@ -2,8 +2,8 @@ package net.kingdomsmod.common;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
@@ -16,6 +16,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.stream.Collectors;
 
@@ -23,12 +24,9 @@ import java.util.stream.Collectors;
 @Mod("kingdoms")
 public class KingdomsMod
 {
-
-    private Hashtable<String, Border> bordersMap = new Hashtable<String, Border>();
-
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
-    private BlockEventHandler blockEventHandler = new BlockEventHandler();
+    private ArrayList<Kingdom> kingdoms = new ArrayList<Kingdom>();
 
     public KingdomsMod() {
         // Register the setup method for modloading
@@ -40,11 +38,18 @@ public class KingdomsMod
         // Register the doClientStuff method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
-        // Register Block Event handler
-        MinecraftForge.EVENT_BUS.register(blockEventHandler);
+        Border testBorder = new Border(new BlockPos(0, 0, 0), new BlockPos(100, 0, 100));
+        Kingdom test = new Kingdom(testBorder);
+        addKingdom(test);
+
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    public void addKingdom(Kingdom kingdom) {
+        kingdoms.add(kingdom);
+        MinecraftForge.EVENT_BUS.register(kingdom);
     }
 
     private void setup(final FMLCommonSetupEvent event)
