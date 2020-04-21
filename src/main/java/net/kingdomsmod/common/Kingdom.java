@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
@@ -12,13 +13,21 @@ import org.apache.logging.log4j.Logger;
 public class Kingdom {
     private static final Logger LOGGER = LogManager.getLogger();
     private Border border;
-    private PlayerEntity ruler;
+    private String ruler = "Alfred";
     private TaxCollector taxes = new TaxCollector();
 
     public Kingdom(Border border) {
         this.border = border;
         // TODO: Add player argument
 //        this.ruler = ruler;
+    }
+
+    public boolean isWithinBorders(Vec3d pos) {
+        return border.isWithinBorder(new BlockPos(pos));
+    }
+
+    public String getRuler() {
+        return ruler;
     }
 
     @SubscribeEvent
