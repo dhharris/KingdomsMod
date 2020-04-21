@@ -1,7 +1,9 @@
 package net.kingdomsmod.common;
 
+import net.kingdomsmod.common.command.KingdomsCommand;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -26,7 +28,7 @@ public class KingdomsMod
 {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
-    private ArrayList<Kingdom> kingdoms = new ArrayList<Kingdom>();
+    private static ArrayList<Kingdom> KINGDOMS = new ArrayList<>();
 
     public KingdomsMod() {
         // Register the setup method for modloading
@@ -47,8 +49,14 @@ public class KingdomsMod
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    public void addKingdom(Kingdom kingdom) {
-        kingdoms.add(kingdom);
+    public static Kingdom[] getKingdoms() {
+        Kingdom[] ret = new Kingdom[KINGDOMS.size()];
+        ret = KINGDOMS.toArray(ret);
+        return ret;
+    }
+
+    public static void addKingdom(Kingdom kingdom) {
+        KINGDOMS.add(kingdom);
         MinecraftForge.EVENT_BUS.register(kingdom);
     }
 
@@ -80,10 +88,9 @@ public class KingdomsMod
     // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
-        // do something when the server starts
-        LOGGER.info("HELLO from server starting THIS IS A TEST");
+        // Add kingdoms command
+        new KingdomsCommand(event.getCommandDispatcher());
     }
-
 //    @SubscribeEvent
 //    public void registerBlocks(RegistryEvent.Register<Block> event) {
 //        event.getRegistry().register(new BlockHandler(event.getRegistry().getValue()));
