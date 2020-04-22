@@ -13,13 +13,12 @@ import org.apache.logging.log4j.Logger;
 public class Kingdom {
     private static final Logger LOGGER = LogManager.getLogger();
     private Border border;
-    private String ruler = "Alfred";
+    private String ruler;
     private TaxCollector taxes = new TaxCollector();
 
-    public Kingdom(Border border) {
+    public Kingdom(Border border, String ruler) {
         this.border = border;
-        // TODO: Add player argument
-//        this.ruler = ruler;
+        this.ruler = ruler;
     }
 
     public boolean isWithinBorders(Vec3d pos) {
