@@ -40,11 +40,6 @@ public class KingdomsMod
         // Register the doClientStuff method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
 
-        Border testBorder = new Border(new BlockPos(0, 0, 0), new BlockPos(100, 0, 100));
-        Kingdom test = new Kingdom(testBorder);
-        addKingdom(test);
-
-
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
