@@ -6,10 +6,7 @@ import net.kingdomsmod.common.KingdomsMod;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextComponent;
 
 
 public class CommandStatus {
@@ -21,7 +18,6 @@ public class CommandStatus {
 
     private static int execute(CommandSource source) throws CommandException {
         Kingdom[] allKingdoms = KingdomsMod.getKingdoms();
-        BlockPos pos = new BlockPos(source.getPos());
         StringTextComponent msg = new StringTextComponent("You are in ");
         for (Kingdom i : allKingdoms) {
             if (i.isWithinBorders(source.getPos())) {
@@ -29,6 +25,7 @@ public class CommandStatus {
                 return 0;
             }
         }
+        // Player is not inside anyone's kingdom
         source.sendFeedback(msg.appendText("the wilderness."), true);
 
         return 0;
