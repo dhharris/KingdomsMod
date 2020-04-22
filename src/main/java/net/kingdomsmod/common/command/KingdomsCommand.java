@@ -10,6 +10,7 @@ public class KingdomsCommand {
         dispatcher.register(
                 LiteralArgumentBuilder.<CommandSource>literal("kingdoms")
                         .then(CommandStatus.register())
+                        .then(CommandAdd.register())
 
         );
     }
