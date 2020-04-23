@@ -4,7 +4,10 @@ import net.kingdomsmod.common.command.KingdomsCommand;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
@@ -22,13 +25,20 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.stream.Collectors;
 
-// The value here should match an entry in the META-INF/mods.toml file
-@Mod("kingdoms")
+@Mod(KingdomsMod.MOD_ID)
 public class KingdomsMod
 {
+    // The value here should match an entry in the META-INF/mods.toml file
+    public static final String MOD_ID = "kingdoms";
+
+    // Useful for getting players by UUID: server.getPlayerList().getPlayerByUUID();
+    public static MinecraftServer server;
+    public static World world;
+    private static KingdomsModWorldSavedData data = new KingdomsModWorldSavedData();
+
+
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
-    private static ArrayList<Kingdom> KINGDOMS = new ArrayList<>();
 
     public KingdomsMod() {
         // Register the setup method for modloading
@@ -44,15 +54,12 @@ public class KingdomsMod
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    public static Kingdom[] getKingdoms() {
-        Kingdom[] ret = new Kingdom[KINGDOMS.size()];
-        ret = KINGDOMS.toArray(ret);
-        return ret;
+    public static void addKingdom(Kingdom kingdom) {
+        data.addKingdom(kingdom);
     }
 
-    public static void addKingdom(Kingdom kingdom) {
-        KINGDOMS.add(kingdom);
-        MinecraftForge.EVENT_BUS.register(kingdom);
+    public static Kingdom[] getKingdoms() {
+        return data.getKingdoms();
     }
 
     private void setup(final FMLCommonSetupEvent event)
@@ -85,6 +92,10 @@ public class KingdomsMod
     public void onServerStarting(FMLServerStartingEvent event) {
         // Add kingdoms command
         new KingdomsCommand(event.getCommandDispatcher());
+
+        // Populate static server-related variables
+        server = event.getServer();
+        world = server.getWorld(DimensionType.OVERWORLD);
     }
 //    @SubscribeEvent
 //    public void registerBlocks(RegistryEvent.Register<Block> event) {
