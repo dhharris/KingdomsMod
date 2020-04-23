@@ -25,6 +25,7 @@ public class KingdomsModWorldSavedData extends WorldSavedData {
     }
 
     @Override
+    @ParametersAreNonnullByDefault
     public void read(CompoundNBT nbt) {
         kingdoms = new ArrayList<>();
         ListNBT kingdomsList = nbt.getList("kingdoms", Constants.NBT.TAG_COMPOUND);
