@@ -14,6 +14,7 @@ import org.apache.logging.log4j.Logger;
 
 public class Kingdom implements INBTSerializable<CompoundNBT> {
     private static final Logger LOGGER = LogManager.getLogger();
+
     private Border border;
     private String ruler;
     private TaxCollector taxes = new TaxCollector();
@@ -27,12 +28,24 @@ public class Kingdom implements INBTSerializable<CompoundNBT> {
         deserializeNBT(nbt);
     }
 
-    public boolean isWithinBorders(Vec3d pos) {
-        return border.isWithinBorder(new BlockPos(pos));
+    public Border getBorder() {
+        return border;
+    }
+
+    public TaxCollector getTaxes() {
+        return taxes;
     }
 
     public String getRuler() {
         return ruler;
+    }
+
+    public String getInfo() {
+        return String.format("Ruler: %s\nTax rate: %2.0f%%\nBorders: %s", ruler, taxes.getTaxRate() * 100, border.toString());
+    }
+
+    public boolean isWithinBorders(Vec3d pos) {
+        return border.isWithinBorder(new BlockPos(pos));
     }
 
     public boolean equals(Kingdom other) {
@@ -76,10 +89,5 @@ public class Kingdom implements INBTSerializable<CompoundNBT> {
         border = new Border(borderNBT);
         taxes = new TaxCollector(taxesNBT);
     }
-
-//    @Override
-//    public void onBlockDestroyedByPlayer(World worldIn, BlockPos pos, IBlockState state) {
-//
-//    }
 }
 
