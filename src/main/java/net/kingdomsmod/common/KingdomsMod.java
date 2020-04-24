@@ -1,11 +1,8 @@
 package net.kingdomsmod.common;
 
 import net.kingdomsmod.common.command.KingdomsCommand;
-import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraftforge.common.MinecraftForge;
@@ -17,12 +14,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
+import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Hashtable;
 import java.util.stream.Collectors;
 
 @Mod(KingdomsMod.MOD_ID)
@@ -96,6 +92,11 @@ public class KingdomsMod
         // Populate static server-related variables
         server = event.getServer();
         world = server.getWorld(DimensionType.OVERWORLD);
+    }
+
+    @SubscribeEvent
+    public void onServerStopping(FMLServerStoppingEvent event) {
+        data.markDirty(); // Not sure if this is needed. More for safety reasons
     }
 //    @SubscribeEvent
 //    public void registerBlocks(RegistryEvent.Register<Block> event) {
