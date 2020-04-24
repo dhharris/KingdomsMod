@@ -16,11 +16,11 @@ import java.util.UUID;
 public class TaxCollector implements INBTSerializable<CompoundNBT> {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final HashSet<String> taxableItems = new HashSet<>(Arrays.asList(
-            "gold_ore",
-            "iron_ore",
-            "diamond_ore",
-            "redstone_ore",
-            "lapis_ore"
+            "Gold Ore",
+            "Iron Ore",
+            "Diamond Ore",
+            "Redstone Ore",
+            "Lapis Lazuli Ore"
     )); // Note: using HashSet provides better perf with O(1) contains()
 
     // Maps players' UUID to their taxable income
