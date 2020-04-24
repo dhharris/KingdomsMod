@@ -58,6 +58,27 @@ class TaxCollectorTest {
     }
 
     @Test
+    void TestGetTaxesOwed() {
+        UUID newPlayer = UUID.randomUUID();
+        final int numMined = 11;
+
+        for (int i = 0; i < numMined; i++) {
+            collector.addIncomeImpl(newPlayer, testItemId);
+        }
+
+        ItemCounter taxes = collector.getTaxesOwed(newPlayer);
+
+        // Owes 10% of 11 rounded up = 2
+        assertEquals(2, taxes.get(testItemId));
+    }
+
+    @Test
+    void TestMarkTaxesAsPaid() {
+        collector.markTaxesAsPaid(testPlayer);
+        assertNull(collector.getIncome(testPlayer));
+    }
+
+    @Test
     void TestNBT() {
         TaxCollector other = new TaxCollector();
         CompoundNBT nbt = collector.serializeNBT();
