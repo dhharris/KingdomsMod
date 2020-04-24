@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.Hashtable;
+import java.util.Set;
 
 /**
  * Simple class that holds items associated with a count
@@ -14,20 +15,24 @@ public class ItemCounter implements INBTSerializable<CompoundNBT> {
     private Hashtable<Integer, Integer> countMap = new Hashtable<>();
 
     public void add(int itemId) {
+        add(itemId, 1);
+    }
+
+    public void add(int itemId, int amount) {
         if (!countMap.containsKey(itemId)) {
-            countMap.put(itemId, 1);
+            countMap.put(itemId, amount);
         } else {
             // Add 1 of the item
-            countMap.replace(itemId, countMap.get(itemId) + 1);
+            countMap.replace(itemId, countMap.get(itemId) + amount);
         }
     }
 
     public int get(int itemId) {
         return countMap.getOrDefault(itemId, 0);
     }
-    public int get(Item item) {
-        int itemId = Item.getIdFromItem(item);
-        return get(itemId);
+
+    public Set<Integer> keySet() {
+        return countMap.keySet();
     }
 
     public boolean equals(ItemCounter other) {
