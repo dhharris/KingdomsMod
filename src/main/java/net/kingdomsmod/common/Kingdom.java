@@ -40,7 +40,7 @@ public class Kingdom implements INBTSerializable<CompoundNBT> {
     }
 
     @SubscribeEvent
-    private void onBreakEvent(BlockEvent.BreakEvent event) {
+    public void onBreakEvent(BlockEvent.BreakEvent event) {
         // Handles block breaking , but only in the Kingdom
         BlockPos pos = event.getPos();
         if (border.isWithinBorder(pos)) {
