@@ -29,6 +29,11 @@ public class Border implements INBTSerializable<CompoundNBT>  {
     }
 
     @Override
+    public String toString() {
+        return String.format("start: %s, end: %s", start.toString(), end.toString());
+    }
+
+    @Override
     public CompoundNBT serializeNBT() {
         CompoundNBT nbt = new CompoundNBT();
 
