@@ -3,7 +3,6 @@ package net.kingdomsmod.common;
 import net.kingdomsmod.common.command.KingdomsCommand;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
