@@ -37,9 +37,9 @@ class ItemCounterTest {
 
         assertEquals(counter.get(testItemId), 1);
 
-        counter.add(testItemId);
+        counter.add(testItemId, 2);
 
-        assertEquals(counter.get(testItemId), 2);
+        assertEquals(counter.get(testItemId), 3);
     }
 
     @Test

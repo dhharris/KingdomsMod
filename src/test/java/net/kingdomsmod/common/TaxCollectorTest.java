@@ -16,55 +16,50 @@ class TaxCollectorTest {
 
     @BeforeEach
     void setUp() {
-        collector.addIncomeImpl(testPlayer, testItemId);
+        collector.addIncomeImpl(testPlayer, testItemId, 5);
     }
 
     @Test
     void TestEqualsShouldBeTrue() {
         TaxCollector other = new TaxCollector();
-        other.addIncomeImpl(testPlayer, testItemId);
+        other.addIncomeImpl(testPlayer, testItemId, 5);
         assertTrue(collector.equals(other));
     }
 
     @Test
     void TestEqualsWithDisjointPlayerSetShouldBeFalse() {
         TaxCollector other = new TaxCollector();
-        other.addIncomeImpl(UUID.randomUUID(), testItemId);
+        other.addIncomeImpl(UUID.randomUUID(), testItemId, 5);
         assertFalse(collector.equals(other));
     }
 
     @Test
     void TestEqualsShouldBeFalse() {
         TaxCollector other = new TaxCollector();
-        other.addIncomeImpl(testPlayer, testItemId);
-        other.addIncomeImpl(testPlayer, testItemId);
+        other.addIncomeImpl(testPlayer, testItemId, 2);
         assertFalse(collector.equals(other));
     }
 
     @Test
     void TestAddIncomeImpl() {
-        collector.addIncomeImpl(testPlayer, 42069);
+        collector.addIncomeImpl(testPlayer, 42069, 5);
         ItemCounter income = collector.getIncome(testPlayer);
-        assertEquals(1, income.get(42069));
-        assertEquals(1, income.get(testItemId));
+        assertEquals(5, income.get(42069));
+        assertEquals(5, income.get(testItemId));
     }
 
     @Test
     void TestAddIncomeImplWithNewPlayer() {
         UUID newPlayer = UUID.randomUUID();
-        collector.addIncomeImpl(newPlayer, testItemId);
-        assertEquals(1, collector.getIncome(newPlayer).get(testItemId));
-        assertEquals(1, collector.getIncome(testPlayer).get(testItemId));
+        collector.addIncomeImpl(newPlayer, testItemId, 5);
+        assertEquals(5, collector.getIncome(newPlayer).get(testItemId));
+        assertEquals(5, collector.getIncome(testPlayer).get(testItemId));
     }
 
     @Test
     void TestGetTaxesOwed() {
         UUID newPlayer = UUID.randomUUID();
-        final int numMined = 11;
-
-        for (int i = 0; i < numMined; i++) {
-            collector.addIncomeImpl(newPlayer, testItemId);
-        }
+        collector.addIncomeImpl(newPlayer, testItemId, 11);
 
         ItemCounter taxes = collector.getTaxesOwed(newPlayer);
 

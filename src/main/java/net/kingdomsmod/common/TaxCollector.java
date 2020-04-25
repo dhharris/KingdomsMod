@@ -2,6 +2,7 @@ package net.kingdomsmod.common;
 
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 import org.apache.logging.log4j.LogManager;
@@ -15,13 +16,12 @@ import java.util.UUID;
 public class TaxCollector implements INBTSerializable<CompoundNBT> {
     private static final Logger LOGGER = LogManager.getLogger();
     // TODO: Display taxable items in CommandStatus
-    // TODO: Add multiplier for ores which drop multiple items
     private static final HashSet<String> taxableItems = new HashSet<>(Arrays.asList(
             "Gold Ore",
             "Iron Ore",
-            "Diamond Ore",
-            "Redstone Ore",
-            "Lapis Lazuli Ore"
+            "Diamond",
+            "Redstone",
+            "Lapis Lazuli"
     )); // Note: using HashSet provides better perf with O(1) contains()
 
     // Maps players' UUID to their taxable income
@@ -42,24 +42,24 @@ public class TaxCollector implements INBTSerializable<CompoundNBT> {
         this.taxRate = taxRate;
     }
 
-    boolean isTaxable(Item item) {
-        // TODO: Make sure this works
+    private boolean isTaxable(Item item) {
         return taxableItems.contains(item.getName().getString());
     }
 
-    public void addIncome(PlayerEntity player, Item item) {
-        if (isTaxable(item)) {
-            addIncomeImpl(player.getUniqueID(), Item.getIdFromItem(item));
+    public void addIncome(PlayerEntity player, ItemStack stack) {
+        if (isTaxable(stack.getItem())) {
+            addIncomeImpl(player.getUniqueID(), Item.getIdFromItem(stack.getItem()), stack.getCount());
         }
     }
 
     // Add income directly, bypassing isTaxable
-    public void addIncomeImpl(UUID playerUUID, int itemId) {
+    // Uses itemId and amount instead of an ItemStack for easier testing
+    public void addIncomeImpl(UUID playerUUID, int itemId, int amount) {
         if (!taxableIncome.containsKey(playerUUID)) {
             taxableIncome.put(playerUUID, new ItemCounter());
         }
         ItemCounter playerIncome = taxableIncome.get(playerUUID);
-        playerIncome.add(itemId);
+        playerIncome.add(itemId, amount);
     }
 
     public ItemCounter getIncome(UUID playerUUID) {

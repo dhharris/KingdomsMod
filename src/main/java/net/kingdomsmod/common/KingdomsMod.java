@@ -5,6 +5,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
@@ -29,7 +30,7 @@ public class KingdomsMod
 
     // Useful for getting players by UUID: server.getPlayerList().getPlayerByUUID();
     public static MinecraftServer server;
-    public static World world;
+    public static ServerWorld world;
     private static KingdomsModWorldSavedData data = new KingdomsModWorldSavedData();
 
 
