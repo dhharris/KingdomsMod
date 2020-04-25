@@ -6,8 +6,11 @@ import net.minecraft.nbt.ListNBT;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.ParametersAreNonnullByDefault;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -17,7 +20,9 @@ import java.util.UUID;
 // KingdomsMod class has an instance of this class and controls access
 @MethodsReturnNonnullByDefault
 public class KingdomsModWorldSavedData extends WorldSavedData {
-    private static final String DATA_NAME = KingdomsMod.MOD_ID + "_Data";
+    private static final String DATA_NAME = KingdomsMod.MOD_ID + "_data";
+    private static final Logger LOGGER = LogManager.getLogger();
+
 
     private ArrayList<Kingdom> kingdoms = new ArrayList<>();
 
@@ -28,6 +33,7 @@ public class KingdomsModWorldSavedData extends WorldSavedData {
     @Override
     @ParametersAreNonnullByDefault
     public void read(CompoundNBT nbt) {
+        LOGGER.info("Loading KingdomsMod data");
         kingdoms = new ArrayList<>();
         ListNBT kingdomsList = nbt.getList("kingdoms", Constants.NBT.TAG_COMPOUND);
 
@@ -44,12 +50,17 @@ public class KingdomsModWorldSavedData extends WorldSavedData {
         // for more examples of ListNBT usage
         ListNBT kingdomsList = new ListNBT();
         for (Kingdom i : kingdoms) {
-            // putInt("index", i); if we need kingdoms to know their index
             kingdomsList.add(i.serializeNBT());
         }
         nbt.put("kingdoms", kingdomsList);
 
         return nbt;
+    }
+
+    @Override
+    public void save(File fileIn) {
+        LOGGER.info(String.format("Saving KingdomsMod data as %s", fileIn.getName()));
+        super.save(fileIn);
     }
 
     public Kingdom[] getKingdoms() {
