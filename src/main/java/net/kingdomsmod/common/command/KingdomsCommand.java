@@ -11,6 +11,7 @@ public class KingdomsCommand {
                         .then(CommandStatus.register())
                         .then(CommandAdd.register())
                         .then(CommandGetTaxesOwed.register())
+                        .then(CommandCollectTaxes.register())
 
         );
     }

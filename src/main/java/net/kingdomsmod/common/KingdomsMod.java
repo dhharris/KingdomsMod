@@ -19,6 +19,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Mod(KingdomsMod.MOD_ID)
@@ -56,6 +57,10 @@ public class KingdomsMod
 
     public static Kingdom[] getKingdoms() {
         return data.getKingdoms();
+    }
+
+    public static void collectTaxes(Kingdom kingdom, UUID playerUUID) {
+        data.collectTaxes(kingdom, playerUUID);
     }
 
     private void setup(final FMLCommonSetupEvent event)

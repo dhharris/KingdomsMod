@@ -9,6 +9,7 @@ import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 // Ex: https://github.com/MinecraftForge/MinecraftForge/blob/1.14.x/src/main/java/net/minecraftforge/common/util/WorldCapabilityData.java
@@ -57,9 +58,16 @@ public class KingdomsModWorldSavedData extends WorldSavedData {
         return ret;
     }
 
+    /* Write Operations Below this line. Make sure to call markDirty() to save data
+     */
+
     public void addKingdom(Kingdom kingdom) {
         addKingdomImpl(kingdom);
-        // Mark data as dirty, since the request came from public method
+        markDirty();
+    }
+
+    public void collectTaxes(Kingdom kingdom, UUID playerUUID) {
+        kingdom.getTaxes().markTaxesAsPaid(playerUUID);
         markDirty();
     }
 
